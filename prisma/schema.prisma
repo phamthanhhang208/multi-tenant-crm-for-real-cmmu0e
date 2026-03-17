@@ -1,0 +1,60 @@
+
+
+// ForgeOS Generated Models
+model Lead {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  email     String
+  phone     String
+  source    String
+  agentId   String
+  agent     Agent     @relation(fields: [agentId], references: [id])
+  activities Activity[]
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  email     String
+  phone     String
+  agentId   String
+  agent     Agent     @relation(fields: [agentId], references: [id])
+  activities Activity[]
+}
+
+model Agent {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  email     String
+  brokerId  String
+  broker    Broker    @relation(fields: [brokerId], references: [id])
+  leads     Lead[]
+  contacts  Contact[]
+}
+
+model Activity {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  type      String
+  description String
+  leadId    String?
+  lead      Lead?     @relation(fields: [leadId], references: [id])
+  contactId String?
+  contact   Contact?  @relation(fields: [contactId], references: [id])
+}
+
+model Broker {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  email     String
+  agents    Agent[]
+}
